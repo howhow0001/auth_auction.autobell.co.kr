@@ -13,12 +13,16 @@ if (php_sapi_name() == 'cli' && $argc >= 3) {
 
 $data = send_request_auth($userId, $passwd);
 
-if (is_string($data)) {
-    $data = json_decode($data, true);
-}
+if ($data && is_string($data)) {
 
-if (!$data) {
-    throw new Exception(json_last_error_msg());
+    $data = json_decode($data, true);
+
+    if (!$data) {
+        throw new Exception(json_last_error_msg());
+    }
+
+} else {
+    throw new Exception("oops");
 }
 
 echo json_encode(
